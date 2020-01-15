@@ -48,24 +48,32 @@ public class ChatBot extends TelegramLongPollingBot  {
         Message message=update.getMessage();
         responseMessage=defaultResponseValue;
         if(message!=null&&message.hasText()){
-            City city=restTemplate.getForObject(url+message.getText(), City.class);
-            if(city!=null){
-                responseMessage=city.getCityDescription();
-            }
+            setResponseMessage(message);
             sendMessage(message,responseMessage);
         }
     }
 
     private void sendMessage(Message message, String text) {
+        try {
+            execute(getSendMessage(message,text));
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setResponseMessage(Message message){
+        City city=restTemplate.getForObject(url+message.getText(), City.class);
+        if(city!=null){
+            responseMessage=city.getCityDescription();
+        }
+    }
+
+    private SendMessage getSendMessage(Message message,String text){
         SendMessage sendMessage=new SendMessage();
         sendMessage.setText(text);
         sendMessage.setChatId(message.getChatId());
         sendMessage.enableMarkdown(true);
-        try {
-            execute(sendMessage);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
+        return sendMessage;
     }
 
     @Override
