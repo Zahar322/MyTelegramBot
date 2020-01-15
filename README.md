@@ -1,0 +1,2 @@
+bot.token=1043763747:AAF6Kfcf0CB_lmUleMvGvPs8ZF9K1d2IW6k
+bot.name=ZaharTouristBot
