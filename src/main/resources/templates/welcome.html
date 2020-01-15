@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap3.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bot.css}"/>
+    <title th:text="#{telegram}"></title>
+</head>
+<body>
+
+<div class="container-fluid">
+
+    <div class="row head ">
+        <div class="col-lg-2">
+            <img src="http://www.gibraltarbuscompany.gi/site//images/buscompany_60px.png" class="logo " imgfield="img" alt="ПЕРСПЕКТИВА.кофе">
+        </div>
+        <div class="col-lg-8 margin">
+            <ul class=" nav nav-pills nav-justified ">
+<!--                <li class="active" ><a th:text="#{main}" href=""></a></li>-->
+                <li  ><a class="actions" th:text="#{save}" url="save" th:method="POST" href="#"></a></li>
+                <li ><a href="#" class="actions" url="update" th:method="PUT" th:text="#{update}" ></a></li>
+                <li ><a href="#" class="actions" url="delete" th:method="DELETE"  th:text="#{delete}" ></a></li>
+
+                <li ><div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" th:text="#{language}" data-toggle="dropdown"> <span class="caret"></span></button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="?language=en_US">EN</a> </li>
+                        <li><a href="?language=ru_RU">RU</a></li>
+                    </ul>
+                </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-lg-2 margintext">
+            <p class="text-center" th:text="#{welcome}"></p>
+        </div>
+
+    </div><!-- /.row -->
+    <div class="row content">
+        <div class="col-lg-2">
+            <p class="text-center message"></p>
+        </div>
+        <div class="col-lg-8"  >
+            <div id="container">
+                <div  id="form" class="form-group form col-lg-4 col-lg-offset-4" >
+                    <div class=" hideWhenDelete  input-group input-group-lg">
+                        <span class="input-group-addon" ><p >Id</p></span>
+                        <input  type="number" disabled="true" id="cityId"  placeholder="Id"   class="form-control " /><br>
+
+                    </div><br>
+                    <div class="  input-group input-group-lg">
+                        <span class="input-group-addon" ><p th:text="#{city.name}"></p></span>
+                        <input  type="text" id="cityName"  th:placeholder="#{city.name}"   class="form-control " /><br>
+                    </div><br>
+                    <div class=" hideWhenDelete  input-group input-group-lg">
+                        <span class="input-group-addon" ><p th:text="#{city.description}"></p></span>
+                        <input  type="text" id="cityDesc" th:placeholder="#{city.description}"  class="  form-control "  />
+
+                    </div><br>
+
+                    <div id="name" style="display: none" class="  input-group input-group-lg">
+                        <span class="input-group-addon" ><p th:text="#{city.name.update}"></p></span>
+                        <input  type="text"  id="updateName"  th:placeholder="#{city.name.update}"   class="form-control " /><br>
+
+                    </div><br>
+
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon" th:text="#{send}"></span>
+                        <button id="crudButton" class="form-control btn btn-primary " onclick="crudOperation()" th:text="#{send}" ></button>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-lg-2">
+            <p class="text-center message"></p>
+        </div>
+    </div>
+
+    <div class="row foot">
+        <div class="col-lg-2" style="padding-top:20px">
+
+        </div>
+
+        <div class="col-lg-2 col-lg-offset-3" style="padding-top:20px">
+            <p>
+                zaharzim@yandex.by <br>
+                +375295107806
+            </p>
+        </div>
+
+        <div class="col-lg-2 col-lg-offset-3" style="padding-top:20px">
+            <p>
+
+            </p>
+        </div>
+    </div>
+
+    <div style="display:none">
+
+
+    </div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script type="text/javascript" th:src="@{/js/cityCrud.js}"></script>
+
+</body>
+</html>
