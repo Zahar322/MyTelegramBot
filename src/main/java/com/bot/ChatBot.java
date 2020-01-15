@@ -30,12 +30,10 @@ public class ChatBot extends TelegramLongPollingBot  {
     @Value("${response.url}")
     private String url;
 
-    private String responseMessage;
     @Value("${bot.default.message}")
     private String defaultResponseValue;
 
-    @Value("${response.url}")
-    private String defaultUrl;
+    private String responseMessage;
 
     @Override
     public String getBotToken() {
