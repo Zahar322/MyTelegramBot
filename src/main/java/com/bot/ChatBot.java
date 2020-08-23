@@ -1,7 +1,12 @@
 package com.bot;
 
 
+import com.commands.Command;
+import com.commands.CommandFactory;
 import com.entity.City;
+import com.myAnno.InjectRandomInt;
+import com.repo.CityRepo;
+import com.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -13,10 +18,19 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 @Component
 @PropertySource("classpath:telegram.properties")
 public class ChatBot extends TelegramLongPollingBot  {
+
+    @Autowired
+    private CityService cityService;
+
+    @Autowired
+    private CommandFactory commandFactory;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -33,7 +47,12 @@ public class ChatBot extends TelegramLongPollingBot  {
     @Value("${bot.default.message}")
     private String defaultResponseValue;
 
+    @InjectRandomInt(min = 3,max = 8)
+    private int injectValue;
+
     private String responseMessage;
+
+    private static final String CITIES="cities";
 
     @Override
     public String getBotToken() {
@@ -45,8 +64,9 @@ public class ChatBot extends TelegramLongPollingBot  {
     public void onUpdateReceived(Update update) {
         Message message=update.getMessage();
         responseMessage=defaultResponseValue;
-        if(message!=null&&message.hasText()){
-            setResponseMessage(message);
+        if(message!=null&&message.hasText()) {
+            sendMessageByCommand(message);
+            System.out.println(message);
             sendMessage(message,responseMessage);
         }
     }
@@ -57,6 +77,25 @@ public class ChatBot extends TelegramLongPollingBot  {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+    }
+    private void sendMessageByCommand(Message message){
+        com.commands.Message botMessage = createMessage(message);
+        Command command=commandFactory.getCommand(botMessage.getCommandName());
+        if(command!=null){
+            responseMessage=command.execute(cityService, botMessage);
+            return;
+        }
+        setResponseMessage(message);
+    }
+
+    private com.commands.Message createMessage(Message message) {
+        String commandName = "^/\\w+";
+        Pattern pattern = Pattern.compile(commandName);
+        Matcher matcher = pattern.matcher(message.getText());
+        if (matcher.find()) {
+            return new com.commands.Message(message.getText().replaceFirst(commandName, ""), matcher.group());
+        }
+        return new com.commands.Message();
     }
 
     private void setResponseMessage(Message message){
